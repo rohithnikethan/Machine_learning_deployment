@@ -1,5 +1,3 @@
 flask
 joblib
 numpy
-pandas
-sklearn
