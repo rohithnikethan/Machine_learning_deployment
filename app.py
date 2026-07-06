@@ -5,8 +5,8 @@ import numpy as np
 app = Flask(__name__)
 
 try:
-    model = joblib.load("logistic_regression_model.pkl")
-    scaler = joblib.load("standard_scaler.pkl")
+    model = joblib.load("logistic_regression_model.joblib")
+    scaler = joblib.load("scaler.joblib")
 except Exception as e:
     print(f"Error loading model or scaler: {e}")
     model = None
