@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import joblib
-import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
@@ -23,11 +23,13 @@ FEATURE_NAMES = [
     "Age"
 ]
 
+
 @app.route("/")
 def home():
     return jsonify({
         "message": "Diabetes Prediction API is running."
     })
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -58,10 +60,13 @@ def predict():
         }), 400
 
     try:
-        input_df = pd.DataFrame([features], columns=FEATURE_NAMES)
+        # Convert list to NumPy array with shape (1, 8)
+        input_data = np.array([features], dtype=float)
 
-        scaled_input = scaler.transform(input_df)
+        # Scale the input
+        scaled_input = scaler.transform(input_data)
 
+        # Make prediction
         prediction = model.predict(scaled_input)[0]
         probabilities = model.predict_proba(scaled_input)[0]
 
@@ -75,6 +80,7 @@ def predict():
         return jsonify({
             "error": str(e)
         }), 500
+
 
 if __name__ == "__main__":
     app.run(
